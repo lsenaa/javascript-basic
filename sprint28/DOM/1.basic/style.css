@@ -1,0 +1,65 @@
+* {
+  box-sizing: border-box;
+  font-size: 1.2rem;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  border: 5px solid palegoldenrod;
+  padding: 20px 0px 100px 0px;
+  border-radius: 8px;
+}
+
+body>* {
+  max-width: fit-content;
+}
+
+.toggle {
+  padding-left: 20px;
+}
+
+ul {
+  margin: 0 auto;
+  padding-left: 0;
+}
+
+li {
+  padding-left: 20px;
+  list-style: none;
+  color: dimgrey;
+}
+
+li:before {
+  content: "\f15b";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 400;
+  padding-right: 10px;
+  color: olivedrab;
+}
+
+.folder {
+  font-weight: bold;
+  color: dimgrey;
+  list-style: none;
+}
+
+.folder:before {  
+  cursor: pointer;
+}
+
+.toggle:not(.isOpen) > .folder:before {
+  content: "\f07b";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 600;
+  color: deepskyblue;
+  padding-right: 10px;
+}
+
+.toggle.isOpen > .folder:before {
+  content: "\f07c";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 400;
+  color: deepskyblue;
+  padding-right: 10px;
+}

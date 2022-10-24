@@ -18,31 +18,45 @@ import { calculateAverage } from "./stage1.js";
 export const designateGrade = function (students) {
   // 여기에서 작업하세요.
   const score = calculateAverage(students);
-  const grade = [];
-  const name = [];
-  let studentObj = {};
+  // const grade = [];
+  // const name = [];
+  // let studentObj = {};
   const result = [];
 
-  for (let tag of score) {
-    name.push(tag.name);
-    if (tag.score >= 91) {
-      grade.push("A");
-    } else if (tag.score >= 81) {
-      grade.push("B");
-    } else if (tag.score >= 71) {
-      grade.push("C");
-    } else if (tag.score >= 61) {
-      grade.push("D");
-    } else {
-      grade.push("F");
-    }
-  }
+  // for (let tag of score) {
+  //   name.push(tag.name);
+  //   if (tag.score >= 91) {
+  //     grade.push("A");
+  //   } else if (tag.score >= 81) {
+  //     grade.push("B");
+  //   } else if (tag.score >= 71) {
+  //     grade.push("C");
+  //   } else if (tag.score >= 61) {
+  //     grade.push("D");
+  //   } else {
+  //     grade.push("F");
+  //   }
+  // }
 
-  for (let i = 0; i < name.length; i++) {
-    studentObj.name = name[i];
-    studentObj.grade = grade[i];
-    result.push(studentObj);
-    studentObj = {};
+  // for (let i = 0; i < name.length; i++) {
+  //   studentObj.name = name[i];
+  //   studentObj.grade = grade[i];
+  //   result.push(studentObj);
+  //   studentObj = {};
+  // }
+
+  for (let i = 0; i < score.length; i++) {
+    if (score[i].score >= 91) {
+      result.push({ name: score[i].name, grade: "A" });
+    } else if (score[i].score >= 81) {
+      result.push({ name: score[i].name, grade: "B" });
+    } else if (score[i].score >= 71) {
+      result.push({ name: score[i].name, grade: "C" });
+    } else if (score[i].score >= 61) {
+      result.push({ name: score[i].name, grade: "D" });
+    } else {
+      result.push({ name: score[i].name, grade: "F" });
+    }
   }
 
   return result;

@@ -19,7 +19,7 @@ export const calculateAverage = function (students) {
   const scoreAverage = [];
   const studentAverage = [];
   const studentName = [];
-  let scoreObj = {};
+  // let scoreObj = {};
 
   for (let tag of students) {
     studentName.push(tag.name);
@@ -28,11 +28,15 @@ export const calculateAverage = function (students) {
     );
   }
 
-  for (let i = 0; i < studentName.length; i++) {
-    scoreObj.name = studentName[i];
-    scoreObj.score = studentAverage[i];
-    scoreAverage.push(scoreObj);
-    scoreObj = {};
+  // for (let i = 0; i < studentName.length; i++) {
+  //   scoreObj.name = studentName[i];
+  //   scoreObj.score = studentAverage[i];
+  //   scoreAverage.push(scoreObj);
+  //   scoreObj = {};
+  // }
+
+  for (let i = 0; i < students.length; i++) {
+    scoreAverage.push({ name: studentName[i], score: studentAverage[i] });
   }
 
   return scoreAverage;

@@ -12,7 +12,6 @@ const dateFormMaker = function () {
   const inputMonth = document.querySelector("#target-month-input").value;
   const inputDate = document.querySelector("#target-date-input").value;
 
-  // const dateFormat = inputYear + '-' + inputMonth + '-' + inputDate;  // 지역변수(함수 안에서 선언됨)
   const dateFormat = `${inputYear}-${inputMonth}-${inputDate}`;
 
   return dateFormat;
@@ -43,11 +42,6 @@ const counterMaker = function (data) {
     return;
   }
 
-  //   const remainingDate = Math.floor(remaining / 3600 / 24); // 3600(시간) 으로 나눈 후, 24로 나누면 며칠이 남았는지 알려준다.
-  //   const remainingHours = Math.floor(remaining / 3600) % 24; // 남은 시간을 알려준다.
-  //   const remainingMin = Math.floor(remaining / 60) % 60; // 남은 분을 알려준다.
-  //   const remainingSec = Math.floor(remaining) % 60; // 남은 초를 알려준다.
-
   // 객체로 변경
   const remainingObj = {
     remainingDate: Math.floor(remaining / 3600 / 24),
@@ -55,11 +49,6 @@ const counterMaker = function (data) {
     remainingMin: Math.floor(remaining / 60) % 60,
     remainingSec: Math.floor(remaining) % 60,
   };
-
-  //   documentObj["days"].textContent = remainingObj["remainingDate"];
-  //   documentObj["hours"].textContent = remainingObj["remainingHours"];
-  //   documentObj["min"].textContent = remainingObj["remainingMin"];
-  //   documentObj["sec"].textContent = remainingObj["remainingSec"];
 
   // 반복문으로 변경
   const documentArr = ["days", "hours", "min", "sec"];
@@ -116,7 +105,7 @@ const resetTimer = function () {
   setClearInterval();
 };
 
-// 화면이 실행되자마자 local stage의 데이터 유무를 파악한다. (truty한 데이터)
+// 화면이 실행되자마자 local stage의 데이터 유무를 파악한다. (truthy한 데이터)
 if (savedDate) {
   starter(savedDate);
 } else {

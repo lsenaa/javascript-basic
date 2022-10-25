@@ -37,11 +37,14 @@ const completeFolderTree = function (folderList) {
       const isOpenFolder = event.target.parentNode;
       const toggleFolder =
         event.target.parentNode.querySelector(".lower-folder");
+      const visible = toggleFolder.style.display;
 
-      isOpenFolder.addEventListener("click", () => {
-        isOpenFolder.classList.add("isOpen");
+      isOpenFolder.classList.toggle("isOpen");
+      if (visible === "block") {
+        toggleFolder.style.display = "none";
+      } else {
         toggleFolder.style.display = "block";
-      });
+      }
     });
   }
 };

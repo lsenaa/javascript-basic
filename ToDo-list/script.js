@@ -2,6 +2,7 @@ const todoInput = document.querySelector("#todo-input");
 const todoList = document.querySelector("#todo-list"); // ul을 가져온다.
 
 const savedTodoList = JSON.parse(localStorage.getItem("saved-items")); // 문자열로 변환된 JSON데이터 타입을 원본 데이터로 변환해준다..
+const savedWeatherData = JSON.parse(localStorage.getItem("saved-weather"));
 
 const createTodo = function (storageData) {
   let todoContents = todoInput.value; // value값을 가져온다
@@ -42,8 +43,8 @@ const createTodo = function (storageData) {
 
 // input에 입력하고 엔터를 누르면 createTodo함수가 실행된다.
 const keyCodeCheck = function () {
-  if (window.event.keyCode === 13 && todoInput.value !== "") {
-    // 버튼이 enter이고, input에 빈 값이 아닐 경우
+  if (window.event.keyCode === 13 && todoInput.value.trim() !== "") {
+    // 버튼이 enter이고, input에 빈 값이 아닐 경우(trim으로 공백도 제외)
     createTodo();
   }
 };
@@ -58,7 +59,7 @@ const deleteAll = function () {
   saveItemsFn();
 };
 
-// Local storage
+////// Local storage //////
 const saveItemsFn = function () {
   const saveItems = [];
   for (let i = 0; i < todoList.children.length; i++) {
@@ -88,4 +89,80 @@ if (savedTodoList) {
   for (let i = 0; i < savedTodoList.length; i++) {
     createTodo(savedTodoList[i]);
   }
+}
+
+///////// geolocation //////////
+
+// 사용자 지역,날씨 데이터를 가져와 화면에 보여준다.
+const weatherDataActive = function ({ location, weather }) {
+  const weatherMainList = [
+    "Clear",
+    "Clouds",
+    "Drizzle",
+    "Rain",
+    "Snow",
+    "Thunderstorm",
+  ];
+  weather = weatherMainList.includes(weather) ? weather : "Fog"; // 데이터와 날씨가 일치하지 않으면, Fog이미지를 보여준다.
+  const locationNameTag = document.querySelector("#location-name-tag");
+  locationNameTag.textContent = location;
+  document.body.style.backgroundImage = `url('./images/${weather}.jpg')`;
+
+  // 현재 저장된 데이터가 없거나, 이전 데이터와 현재 데이터가 다르다면, local storage에 저장한다.(불필요한 데이터가 local storage에 저장되지 않도록 한다.)
+  if (
+    !savedWeatherData ||
+    savedWeatherData.location !== location ||
+    savedWeatherData.weather !== weather
+  ) {
+    localStorage.setItem(
+      "saved-weather",
+      JSON.stringify({ location, weather })
+    );
+  }
+};
+
+// fetch()로 api 날씨 데이터를 요청한다.
+const weatherSearch = function ({ latitude, longitude }) {
+  const openWeatherRes = fetch(
+    `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=6e4156321be59bb41e4d87c59486dbd9`
+  )
+    .then((res) => {
+      return res.json(); // 응답 헤더가 존재할 경우 json()을 사용한다. JSON.parse는 응답 바디만 존재할때 사용한다.
+    })
+    .then((json) => {
+      // 지역이름, 날씨를 가져온다.
+      const weatherData = {
+        location: json.name,
+        weather: json.weather[0].main,
+      };
+      weatherDataActive(weatherData);
+    })
+    .catch((err) => {
+      // catch: 에러 발생 시 요청이 제대로 이루어 지지 않은 원인을 확인할 수 있다.
+      console.log(err);
+    });
+};
+
+// 위도, 경도 데이터를 가져와 객체에 저장한다. 구조분해할당(position의 coords 값만 가져온다.)
+const accessToGeo = function ({ coords }) {
+  // 구조분해할당 (latitude, longitude)
+  const { latitude, longitude } = coords;
+  const positionObj = {
+    // shorthand property: 객체의 키와 값의 이름이 같다면 한번만 작성해도 된다.
+    latitude,
+    longitude,
+  };
+
+  weatherSearch(positionObj);
+};
+
+const askForLocation = function () {
+  navigator.geolocation.getCurrentPosition(accessToGeo, (err) => {
+    //err: 두번째 콜백함수. 접근하지 못할 경우 에러가 발생한다.
+  });
+};
+askForLocation();
+
+if (savedWeatherData) {
+  weatherDataActive(savedWeatherData);
 }
